@@ -112,7 +112,18 @@
         _delegate = delegate;
         _inBackground = background;
         
-        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
+        NSProcessInfo *processInfo = [NSProcessInfo processInfo];
+        NSString *customTimeout = processInfo.environment[@"SPARKLE_TIMEOUT"];
+        NSTimeInterval timeout;
+        if (customTimeout != nil) {
+            timeout = customTimeout.doubleValue;
+        } else {
+            timeout = 60.0;
+        }
+        
+        NSLog(@"SPARKLE_TIMEOUT: %f", timeout);
+        
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:timeout];
         
         if (userAgent != nil) {
             [request setValue:(NSString * _Nonnull)userAgent forHTTPHeaderField:@"User-Agent"];
