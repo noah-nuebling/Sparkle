@@ -27,6 +27,7 @@
     SPUVerifierInformation *_verifierInformation;
     
     BOOL _prevalidatedSignature;
+    BOOL _validatedDownloadUsingCodeSigning;
 }
 
 - (instancetype)initWithDownloadPath:(NSString *)downloadPath signatures:(SUSignatures *)signatures host:(SUHost *)host verifierInformation:(SPUVerifierInformation * _Nullable)verifierInformation
@@ -41,25 +42,76 @@
     return self;
 }
 
-- (BOOL)validateDownloadPathWithError:(NSError * __autoreleasing *)error
+- (BOOL)validateHostHasPublicKeys:(NSError * __autoreleasing *)error
+{
+    SUPublicKeys *publicKeys = _host.publicKeys;
+    
+    if (!publicKeys.hasAnyKeys) {
+        if (error != NULL) {
+            *error = [NSError errorWithDomain:SUSparkleErrorDomain code:SUInsufficientSigningError userInfo:@{ NSLocalizedDescriptionKey: @"Failed to validate update before unarchiving because no (Ed)DSA public key was found in the old app" }];
+        }
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL)validateDownloadPathWithFallbackOnCodeSigning:(BOOL)fallbackOnCodeSigning error:(NSError * __autoreleasing *)error
 {
     SUPublicKeys *publicKeys = _host.publicKeys;
     SUSignatures *signatures = _signatures;
 
-    if (!publicKeys.hasAnyKeys) {
-        if (error != NULL) {
-            *error = [NSError errorWithDomain:SUSparkleErrorDomain code:SUInstallationError userInfo:@{ NSLocalizedDescriptionKey: @"Failed to validate update before unarchiving because no (Ed)DSA public key was found in the old app" }];
-        }
-    } else {
-        NSError *innerError = nil;
-        if ([SUSignatureVerifier validatePath:_downloadPath withSignatures:signatures withPublicKeys:publicKeys verifierInformation:_verifierInformation error:&innerError]) {
+    NSError *dsaVerificationError = nil;
+    if ([SUSignatureVerifier validatePath:_downloadPath withSignatures:signatures withPublicKeys:publicKeys verifierInformation:_verifierInformation error:&dsaVerificationError]) {
+        _prevalidatedSignature = YES;
+        return YES;
+    }
+    
+    NSMutableArray<NSError *> *underlyingErrors = [[NSMutableArray alloc] init];
+    if (dsaVerificationError != nil) {
+        [underlyingErrors addObject:dsaVerificationError];
+    }
+    
+    if (fallbackOnCodeSigning) {
+        SULog(SULogLevelError, @"Failed to validate update archive with (Ed)DSA signing. Trying fallback with Apple Developer ID code signing verification: %@", dsaVerificationError);
+        
+        // (Ed)DSA validation failed + signed archives are required + regular app update
+        // As fallback for key rotation, check if the archive is Developer ID signed with a team ID that matches the host
+        NSError *codeSignError = nil;
+        NSURL *downloadURL = [NSURL fileURLWithPath:_downloadPath isDirectory:NO];
+        
+        if (![SUCodeSigningVerifier codeSignatureIsValidAtDownloadURL:downloadURL andMatchesDeveloperIDTeamFromOldBundleURL:_host.bundle.bundleURL error:&codeSignError]) {
+            SULog(SULogLevelError, @"Failed to validate update archive with Developer ID code signing fallback: %@", codeSignError);
+            
+            if (codeSignError != nil) {
+                [underlyingErrors addObject:codeSignError];
+            }
+        } else {
             _prevalidatedSignature = YES;
+            _validatedDownloadUsingCodeSigning = YES;
             return YES;
         }
-        if (error != NULL) {
-            *error = [NSError errorWithDomain:SUSparkleErrorDomain code:SUInstallationError userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"(Ed)DSA signature validation before unarchiving failed for update %@", _downloadPath], NSUnderlyingErrorKey: innerError }];
-        }
     }
+    
+    if (error != NULL) {
+        NSMutableDictionary<NSString *, id> *userInfo = [[NSMutableDictionary alloc] init];
+        userInfo[NSLocalizedDescriptionKey] = [NSString stringWithFormat:@"(Ed)DSA signature validation before unarchiving failed for update %@", _downloadPath];
+        
+        if (dsaVerificationError != nil) {
+            // This is the primary error
+            userInfo[NSUnderlyingErrorKey] = dsaVerificationError;
+        }
+        
+        if (underlyingErrors.count > 1) {
+            if (@available(macOS 11.3, *)) {
+                userInfo[NSMultipleUnderlyingErrorsKey] = [underlyingErrors copy];
+            }
+        }
+        
+        *error = [NSError errorWithDomain:SUSparkleErrorDomain code:SUInstallationError userInfo:[userInfo copy]];
+    }
+    
     return NO;
 }
 
@@ -119,9 +171,9 @@
 #endif
     else
     {
-        // We already validated the EdDSA signature
+        // We already validated the download archive
         // Let's check if the update passes Sparkle's basic update policy and that the update is properly signed
-        // Currently, this case gets hit only for binary delta updates and .aar/.yaa archives
+        // Currently, this case gets hit for binary delta updates and updates requiring SUVerifyUpdateBeforeExtraction
         
         NSBundle *newBundle = [NSBundle bundleWithURL:installSourceURL];
         SUHost *newHost = [[SUHost alloc] initWithBundle:newBundle];
@@ -140,13 +192,45 @@
             return NO;
         }
         
-        NSError *innerError = nil;
-        if (updateIsCodeSigned && ![SUCodeSigningVerifier codeSignatureIsValidAtBundleURL:installSourceURL error:&innerError]) {
+        NSError *codeSigningInnerError = nil;
+        if (updateIsCodeSigned && ![SUCodeSigningVerifier codeSignatureIsValidAtBundleURL:installSourceURL error:&codeSigningInnerError]) {
             if (error != NULL) {
-                *error = [NSError errorWithDomain:SUSparkleErrorDomain code:SUValidationError userInfo:@{ NSLocalizedDescriptionKey: @"Failed to validate apple code sign signature on bundle after archive validation", NSUnderlyingErrorKey: innerError }];
+                NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+                
+                userInfo[NSLocalizedDescriptionKey] = @"The update archive is validly signed, but the app's Apple code signing signature is corrupted. The update will be rejected.";
+                
+                if (codeSigningInnerError != nil) {
+                    userInfo[NSUnderlyingErrorKey] = codeSigningInnerError;
+                }
+                
+                *error = [NSError errorWithDomain:SUSparkleErrorDomain code:SUValidationError userInfo:userInfo];
             }
             
             return NO;
+        }
+        
+        if (_validatedDownloadUsingCodeSigning) {
+            // Old EdDSA key failed on download archive, and Apple Code signing validation was used as a fallback (with SUVerifyUpdateBeforeExtraction set to YES),
+            // which means the developer may be rotating keys.
+            // So we must validate new EdDSA key with the new download.
+            // This is a policy to ensure the next update can be updatable with the new EdDSA key (not a security measure).
+            NSError *validateInnerError = nil;
+            BOOL validationCheckSuccess = [SUSignatureVerifier validatePath:downloadPath withSignatures:signatures withPublicKeys:newPublicKeys verifierInformation:_verifierInformation error:&validateInnerError];
+            if (!validationCheckSuccess) {
+                if (error != NULL) {
+                    NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+                    
+                    userInfo[NSLocalizedDescriptionKey] = @"(Ed)DSA signature validation failed after using Apple code signing to validate the update archive. The update has a public (Ed)DSA key, but the public key shipped with the update doesn't match the signature. To prevent future problems, the update will be rejected.";
+                    
+                    if (validateInnerError != nil) {
+                        userInfo[NSUnderlyingErrorKey] = validateInnerError;
+                    }
+                    
+                    *error = [NSError errorWithDomain:SUSparkleErrorDomain code:SUValidationError userInfo:userInfo];
+                }
+                
+                return NO;
+            }
         }
         
         return YES;
@@ -262,10 +346,10 @@
     if (hostIsCodeSigned) {
         passedCodeSigning = [SUCodeSigningVerifier codeSignatureIsValidAtBundleURL:newHost.bundle.bundleURL andMatchesSignatureAtBundleURL:host.bundle.bundleURL error:&codeSignedError];
     }
-    // End of security-critical part
-
-    // If the new DSA key differs from the old, then this check is not a security measure, because the new key is not trusted.
-    // In that case, the check ensures that the app author has correctly used DSA keys, so that the app will be updateable in the next version.
+    
+    // If code signing passes, and the new DSA key differs from the old, the check ensures that the app author has correctly used DSA keys for the new update, so the app will be updateable in the next version.
+    // Code signing passing ensures the new DSA key can also be trusted for validating the archive.
+    // If code signing doesn't pass, DSA validation failing will be an error either way.
     if (!passedDSACheck && newHasAnyDSAKey) {
         NSError *innerError = nil;
         if (![SUSignatureVerifier validatePath:downloadedPath withSignatures:signatures withPublicKeys:newPublicKeys verifierInformation:_verifierInformation error:&innerError]) {
@@ -275,6 +359,7 @@
             return NO;
         }
     }
+    // End of security-critical part
 
     // If the new update is code signed but it's not validly code signed, we reject it
     NSError *innerError = nil;

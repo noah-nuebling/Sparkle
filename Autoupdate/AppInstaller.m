@@ -176,10 +176,10 @@ static const NSTimeInterval SUDisplayProgressTimeDelay = 0.7;
     
     id<SUUnarchiverProtocol> unarchiver = [SUUnarchiver unarchiverForPath:archivePath extractionDirectory:_extractionDirectory updatingHostBundlePath:_host.bundlePath decryptionPassword:_decryptionPassword expectingInstallationType:_installationType];
     
-    NSError *unarchiverError = nil;
+    NSError *prevalidationError = nil;
     BOOL success = NO;
     if (!unarchiver) {
-        unarchiverError = [NSError errorWithDomain:SUSparkleErrorDomain code:SUUnarchivingError userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"No valid unarchiver was found for %@", archivePath] }];
+        prevalidationError = [NSError errorWithDomain:SUSparkleErrorDomain code:SUUnarchivingError userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"No valid unarchiver was found for %@", archivePath] }];
         
         success = NO;
     } else {
@@ -192,20 +192,38 @@ static const NSTimeInterval SUDisplayProgressTimeDelay = 0.7;
         }
         
         _updateValidator = [[SUUpdateValidator alloc] initWithDownloadPath:archivePath signatures:_signatures host:_host verifierInformation:_verifierInformation];
-
-        // Delta, package updates, and .aar/.yaa archives will require validation before extraction
-        // Normal application updates are a bit more lenient allowing developers to change one of apple dev ID or EdDSA keys
-        BOOL needsPrevalidation = [[unarchiver class] mustValidateBeforeExtractionWithArchivePath:archivePath] || ![_installationType isEqualToString:SPUInstallationTypeApplication];
-
-        if (needsPrevalidation) {
-            success = [_updateValidator validateDownloadPathWithError:&unarchiverError];
+        
+        // More uncommon archives types (.aar, .yaa) need SUVerifyUpdateBeforeExtraction
+        BOOL verifyBeforeExtraction = [_host boolForInfoDictionaryKey:SUVerifyUpdateBeforeExtractionKey];
+        if (!verifyBeforeExtraction && unarchiver.needsVerifyBeforeExtractionKey) {
+            prevalidationError = [NSError errorWithDomain:SUSparkleErrorDomain code:SUValidationError userInfo:@{ NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Extracting %@ archives require setting %@ to YES in the old app. Please visit https://sparkle-project.org/documentation/customization/ for more information.", archivePath.pathExtension, SUVerifyUpdateBeforeExtractionKey] }];
+            
+            success = NO;
         } else {
-            success = YES;
+            // Delta, package updates, and apps with SUVerifyUpdateBeforeExtraction will require validation before extraction
+            // Otherwise normal application updates are a bit more lenient allowing developers to change one of apple dev ID or EdDSA keys after extraction
+            BOOL archiveTypeMustValidateBeforeExtraction = [[unarchiver class] mustValidateBeforeExtraction];
+            BOOL needsPrevalidation = verifyBeforeExtraction || archiveTypeMustValidateBeforeExtraction || ![_installationType isEqualToString:SPUInstallationTypeApplication];
+
+            if (needsPrevalidation) {
+                // EdDSA signing is required, so host must have public keys
+                if (![_updateValidator validateHostHasPublicKeys:&prevalidationError]) {
+                    success = NO;
+                } else {
+                    // Falling back on code signing for prevalidation requires SUVerifyUpdateBeforeExtraction
+                    // and that update is a regular app update, and not a delta update
+                    BOOL fallbackOnCodeSigning = (verifyBeforeExtraction && !archiveTypeMustValidateBeforeExtraction && [_installationType isEqualToString:SPUInstallationTypeApplication]);
+                    
+                    success = [_updateValidator validateDownloadPathWithFallbackOnCodeSigning:fallbackOnCodeSigning error:&prevalidationError];
+                }
+            } else {
+                success = YES;
+            }
         }
     }
     
     if (!success) {
-        [self unarchiverDidFailWithError:unarchiverError];
+        [self unarchiverDidFailWithError:prevalidationError];
     } else {
         [unarchiver
          unarchiveWithCompletionBlock:^(NSError * _Nullable error) {
