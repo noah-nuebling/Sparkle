@@ -7,7 +7,7 @@
   * Randomize the download archive name the installer extracts/executes (#2584) (Zorg)
   * Retry extracting zip file without piping if extraction fails to workaround bug prior to macOS 15 (#2616) (Zorg)
   * Add opt-in SUVerifyUpdateBeforeExtraction option to force verification of updates before extraction (#2667) (Zorg)
-  * Add support for extracting Apple Archives (.aar files; requires SUVerifyUpdateBeforeExtraction) (#2586, #2588, #2590) (Zorg)
+  * Add support for extracting Apple Archives (.aar files; requires SUVerifyUpdateBeforeExtraction, macOS 10.15+) (#2586, #2588, #2590) (Zorg)
   * Don't allow removal of signing keys more strictly (#2647) (Zorg)
 * Add new BinaryDelta format (version 4) (Zorg)
   * Preserve bundle creation date when creating and applying delta updates (#2583) (Zorg)
