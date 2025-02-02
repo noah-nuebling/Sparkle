@@ -9,11 +9,13 @@
   * Add opt-in SUVerifyUpdateBeforeExtraction option to force verification of updates before extraction (#2667) (Zorg)
   * Add support for extracting Apple Archives (.aar files; requires SUVerifyUpdateBeforeExtraction, macOS 10.15+) (#2586, #2588, #2590) (Zorg)
   * Don't allow removal of signing keys more strictly (#2647) (Zorg)
+  * Remove SPARKLE_BUILD_DMG_SUPPORT option (#2690) (Zorg)
 * Add new BinaryDelta format (version 4) (Zorg)
   * Preserve bundle creation date when creating and applying delta updates (#2583) (Zorg)
   * Use faster crc32 hashes for binary delta version 4 (#2638) (Zorg)
   * Make binary delta version 4 the default (#2668) (Zorg)
 * Language / layout improvements
+  * Fix recovery error suggestion not shown when app is translocated or on read-only mount (#2689) (Zorg)
   * Fix typo in Dutch localisation (#2642) (Eitot)
   * Add baseline alignment to status text in SUStatus dialog (#2587) (Eitot)
   * Make horizontal hugging priority required for status text field (#2614) (Zorg)
