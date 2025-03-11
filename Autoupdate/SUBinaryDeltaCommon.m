@@ -113,11 +113,11 @@ uint16_t latestMinorVersionForMajorVersion(SUBinaryDeltaMajorVersion majorVersio
         case SUBinaryDeltaMajorVersion1:
             return 2;
         case SUBinaryDeltaMajorVersion2:
-            return 4;
+            return 5;
         case SUBinaryDeltaMajorVersion3:
-            return 1;
+            return 2;
         case SUBinaryDeltaMajorVersion4:
-            return 0;
+            return 1;
     }
     return 0;
 }
