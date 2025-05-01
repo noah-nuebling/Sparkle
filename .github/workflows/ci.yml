@@ -81,7 +81,7 @@ jobs:
         run: |
             {
                 echo 'content<<EOF'
-                cat analyze_output.txt
+                head -c 4096 analyze_output.txt
                 echo 'EOF'
             } >> $GITHUB_OUTPUT
       
