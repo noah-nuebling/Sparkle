@@ -131,6 +131,9 @@
 Gw
 </string>
                         </buttonCell>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="222" constant="90" id="2Zy-5G-GBj"/>
+                        </constraints>
                         <connections>
                             <action selector="remindMeLater:" target="-2" id="34"/>
                         </connections>
@@ -172,7 +175,7 @@ DQ
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="yM1-TA-HfP"/>
                         </constraints>
                         <connections>
-                            <binding destination="93" name="value" keyPath="values.SUAutomaticallyUpdate" id="135"/>
+                            <binding destination="-2" name="value" keyPath="self.updaterSettings.automaticallyDownloadsUpdates" id="kdq-kt-v6U"/>
                         </connections>
                     </button>
                 </subviews>
