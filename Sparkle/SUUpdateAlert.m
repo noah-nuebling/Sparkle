@@ -368,10 +368,6 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
 //    
 //    [window addTitlebarAccessoryViewController:titlebarAccessoryViewController];
     
-    [_stackView insertView:_titleView atIndex:0 inGravity:NSStackViewGravityTop];
-    [_stackView setCustomSpacing:0.0 afterView:_releaseNotesTopDivider];
-    [_stackView setCustomSpacing:0.0 afterView:_releaseNotesContainerView];
-    
     BOOL showReleaseNotes = [self showsReleaseNotes];
     if (showReleaseNotes) {
         window.frameAutosaveName = @"SUUpdateAlert";
@@ -389,6 +385,11 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     BOOL allowsAutomaticUpdates = _allowsAutomaticUpdates;
     
     if (showReleaseNotes) {
+        // Adjust spacing for release notes dividers
+        [_stackView insertView:_titleView atIndex:0 inGravity:NSStackViewGravityTop];
+        [_stackView setCustomSpacing:0.0 afterView:_releaseNotesTopDivider];
+        [_stackView setCustomSpacing:0.0 afterView:_releaseNotesContainerView];
+        
         [self displayReleaseNotesSpinner];
     } else {
         _releaseNotesContainerView.hidden = YES;
