@@ -30,7 +30,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1470" height="918"/>
             <value key="minSize" type="size" width="550" height="150"/>
             <view key="contentView" misplaced="YES" id="6">
-                <rect key="frame" x="0.0" y="0.0" width="620" height="423"/>
+                <rect key="frame" x="0.0" y="0.0" width="620" height="370"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="61v-5k-OXp">
@@ -183,7 +183,7 @@ DQ
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <imageView translatesAutoresizingMaskIntoConstraints="NO" id="F1L-zh-U8Z" userLabel="Program icon">
-                    <rect key="frame" x="20" y="0.0" width="64" height="64"/>
+                    <rect key="frame" x="20" y="-1" width="64" height="64"/>
                     <constraints>
                         <constraint firstAttribute="width" priority="800" constant="64" id="66j-dF-FGm"/>
                         <constraint firstAttribute="width" secondItem="F1L-zh-U8Z" secondAttribute="height" multiplier="1:1" id="OlN-VE-Lim"/>
@@ -194,12 +194,9 @@ DQ
                         <binding destination="-2" name="value" keyPath="applicationIcon" id="DAK-U8-9cN"/>
                     </connections>
                 </imageView>
-                <textField focusRingType="none" horizontalHuggingPriority="350" verticalHuggingPriority="999" horizontalCompressionResistancePriority="100" verticalCompressionResistancePriority="1000" preferredMaxLayoutWidth="490" translatesAutoresizingMaskIntoConstraints="NO" id="WdU-eY-Ta9" userLabel="Question text field">
+                <textField focusRingType="none" verticalHuggingPriority="999" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" preferredMaxLayoutWidth="490" translatesAutoresizingMaskIntoConstraints="NO" id="WdU-eY-Ta9" userLabel="Question text field">
                     <rect key="frame" x="90" y="12" width="52" height="14"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="14" id="tnk-eH-zR8"/>
-                    </constraints>
-                    <textFieldCell key="cell" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Question" id="Jsa-P1-mWz">
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Question" usesSingleLineMode="YES" id="Jsa-P1-mWz">
                         <font key="font" metaFont="smallSystem"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -208,12 +205,9 @@ DQ
                         <binding destination="-2" name="value" keyPath="descriptionText" id="83R-0d-Obq"/>
                     </connections>
                 </textField>
-                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Nvn-Dp-hAH" userLabel="Version text field">
-                    <rect key="frame" x="90" y="34" width="82" height="17"/>
-                    <constraints>
-                        <constraint firstAttribute="height" priority="777" constant="17" id="GAk-re-xrz"/>
-                    </constraints>
-                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Version title" usesSingleLineMode="YES" id="f6r-wP-EYG">
+                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Nvn-Dp-hAH" userLabel="Version text field">
+                    <rect key="frame" x="90" y="34" width="82" height="16"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Version title" usesSingleLineMode="YES" id="f6r-wP-EYG">
                         <font key="font" metaFont="systemBold"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
