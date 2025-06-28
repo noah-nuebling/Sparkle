@@ -31,6 +31,23 @@
 #import "SPUXPCServiceInfo.h"
 #import "SPUUserUpdateState.h"
 
+@interface SUBackgroundSeparatorView : NSView
+@end
+
+@implementation SUBackgroundSeparatorView
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+    if (@available(macOS 10.14, *)) {
+        [NSColor.separatorColor setFill];
+    } else {
+        [NSColor.lightGrayColor setFill];
+    }
+    NSRectFill(self.bounds);
+}
+
+@end
+
 static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDENTIFIER ".SUUpdateAlert";
 
 @interface SUUpdateAlert () <NSTouchBarDelegate>
@@ -47,12 +64,15 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     id<SUReleaseNotesView> _releaseNotesView;
     id<SUVersionDisplay> _versionDisplayer;
     
+    IBOutlet NSStackView *_stackView;
+    IBOutlet NSView *_titleView;
     IBOutlet NSButton *_installButton;
     IBOutlet NSButton *_laterButton;
     IBOutlet NSButton *_skipButton;
-    IBOutlet NSBox *_releaseNotesBoxView;
     IBOutlet NSTextField *_descriptionField;
     IBOutlet NSView *_releaseNotesContainerView;
+    IBOutlet SUBackgroundSeparatorView *_releaseNotesTopDivider;
+    IBOutlet SUBackgroundSeparatorView *_releaseNotesBottomDivider;
     IBOutlet NSButton *_automaticallyInstallUpdatesButton;
     
     void (^_didBecomeKeyBlock)(void);
@@ -153,12 +173,11 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
 - (void)displayReleaseNotesSpinner SPU_OBJC_DIRECT
 {
     // Stick a nice big spinner in the middle of the web view until the page is loaded.
-    NSView *boxContentView = _releaseNotesBoxView.contentView;
-    NSRect frame = boxContentView.frame;
+    NSRect frame = _releaseNotesContainerView.frame;
     _releaseNotesSpinner = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(NSMidX(frame) - 16, NSMidY(frame) - 16, 32, 32)];
     [_releaseNotesSpinner setStyle:NSProgressIndicatorStyleSpinning];
     [_releaseNotesSpinner startAnimation:self];
-    [boxContentView addSubview:_releaseNotesSpinner];
+    [_releaseNotesContainerView addSubview:_releaseNotesSpinner];
     
     // If there's no release notes URL, just stick the contents of the description into the web view
     // Otherwise we'll wait until the client wants us to show release notes
@@ -315,11 +334,10 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
         }
     }
     
-    NSView *boxContentView = _releaseNotesBoxView.contentView;
     assert(_releaseNotesSpinner != nil);
-    [boxContentView addSubview:_releaseNotesView.view positioned:NSWindowBelow relativeTo:_releaseNotesSpinner];
+    [_releaseNotesContainerView addSubview:_releaseNotesView.view positioned:NSWindowBelow relativeTo:_releaseNotesSpinner];
     
-    _releaseNotesView.view.frame = boxContentView.bounds;
+    _releaseNotesView.view.frame = _releaseNotesContainerView.bounds;
     _releaseNotesView.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     
     if (@available(macOS 10.14, *)) {
@@ -344,6 +362,16 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
 {
     NSWindow *window = self.window;
     
+//    NSTitlebarAccessoryViewController *titlebarAccessoryViewController = [[NSTitlebarAccessoryViewController alloc] init];
+//    titlebarAccessoryViewController.view = _titleView;
+//    titlebarAccessoryViewController.layoutAttribute = NSLayoutAttributeTop;
+//    
+//    [window addTitlebarAccessoryViewController:titlebarAccessoryViewController];
+    
+    [_stackView insertView:_titleView atIndex:0 inGravity:NSStackViewGravityTop];
+    [_stackView setCustomSpacing:0.0 afterView:_releaseNotesTopDivider];
+    [_stackView setCustomSpacing:0.0 afterView:_releaseNotesContainerView];
+    
     BOOL showReleaseNotes = [self showsReleaseNotes];
     if (showReleaseNotes) {
         window.frameAutosaveName = @"SUUpdateAlert";
@@ -365,13 +393,16 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     } else {
         // When automatic updates aren't allowed we won't show the automatic install updates button
         // This button is removed later below
-        if (allowsAutomaticUpdates) {
-            NSLayoutConstraint *automaticallyInstallUpdatesButtonToDescriptionFieldConstraint = [NSLayoutConstraint constraintWithItem:_automaticallyInstallUpdatesButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_descriptionField attribute:NSLayoutAttributeBottom multiplier:1.0 constant:8.0];
-            
-            [window.contentView addConstraint:automaticallyInstallUpdatesButtonToDescriptionFieldConstraint];
-        }
+//        if (allowsAutomaticUpdates) {
+//            NSLayoutConstraint *automaticallyInstallUpdatesButtonToDescriptionFieldConstraint = [NSLayoutConstraint constraintWithItem:_automaticallyInstallUpdatesButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_descriptionField attribute:NSLayoutAttributeBottom multiplier:1.0 constant:8.0];
+//            
+//            [window.contentView addConstraint:automaticallyInstallUpdatesButtonToDescriptionFieldConstraint];
+//        }
         
-        [_releaseNotesContainerView removeFromSuperview];
+        //[_releaseNotesContainerView removeFromSuperview];
+        _releaseNotesContainerView.hidden = YES;
+        _releaseNotesTopDivider.hidden = YES;
+        _releaseNotesBottomDivider.hidden = YES;
     }
     
     // NOTE: The code below for deciding what buttons to hide is complex! Due to array of feature configurations :)
@@ -379,17 +410,19 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     // When we show release notes, it looks ugly if the install buttons are not closer to the release notes view
     // However when we don't show release notes, it looks ugly if the install buttons are too close to the description field. Shrugs.
     if (!allowsAutomaticUpdates) {
-        if (showReleaseNotes) {
-            // Fix constraints so that buttons aren't far away from web view when we hide the automatic updates check box
-            NSLayoutConstraint *skipButtonToReleaseNotesContainerConstraint = [NSLayoutConstraint constraintWithItem:_skipButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_releaseNotesContainerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:12.0];
-            
-            [window.contentView addConstraint:skipButtonToReleaseNotesContainerConstraint];
-        } else {
-            NSLayoutConstraint *skipButtonToDescriptionConstraint = [NSLayoutConstraint constraintWithItem:_skipButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_descriptionField attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20.0];
-
-            [window.contentView addConstraint:skipButtonToDescriptionConstraint];
-        }
-        [_automaticallyInstallUpdatesButton removeFromSuperview];
+//        if (showReleaseNotes) {
+//            // Fix constraints so that buttons aren't far away from web view when we hide the automatic updates check box
+//            NSLayoutConstraint *skipButtonToReleaseNotesContainerConstraint = [NSLayoutConstraint constraintWithItem:_skipButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_releaseNotesContainerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:12.0];
+//            
+//            [window.contentView addConstraint:skipButtonToReleaseNotesContainerConstraint];
+//        } else {
+//            NSLayoutConstraint *skipButtonToDescriptionConstraint = [NSLayoutConstraint constraintWithItem:_skipButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_descriptionField attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20.0];
+//
+//            [window.contentView addConstraint:skipButtonToDescriptionConstraint];
+//        }
+//        [_automaticallyInstallUpdatesButton removeFromSuperview];
+        
+        _automaticallyInstallUpdatesButton.superview.hidden = YES;
     }
     
     if (_state.stage == SPUUserUpdateStageInstalling) {
