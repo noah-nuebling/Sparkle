@@ -391,15 +391,6 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     if (showReleaseNotes) {
         [self displayReleaseNotesSpinner];
     } else {
-        // When automatic updates aren't allowed we won't show the automatic install updates button
-        // This button is removed later below
-//        if (allowsAutomaticUpdates) {
-//            NSLayoutConstraint *automaticallyInstallUpdatesButtonToDescriptionFieldConstraint = [NSLayoutConstraint constraintWithItem:_automaticallyInstallUpdatesButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_descriptionField attribute:NSLayoutAttributeBottom multiplier:1.0 constant:8.0];
-//            
-//            [window.contentView addConstraint:automaticallyInstallUpdatesButtonToDescriptionFieldConstraint];
-//        }
-        
-        //[_releaseNotesContainerView removeFromSuperview];
         _releaseNotesContainerView.hidden = YES;
         _releaseNotesTopDivider.hidden = YES;
         _releaseNotesBottomDivider.hidden = YES;
@@ -407,21 +398,7 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     
     // NOTE: The code below for deciding what buttons to hide is complex! Due to array of feature configurations :)
     
-    // When we show release notes, it looks ugly if the install buttons are not closer to the release notes view
-    // However when we don't show release notes, it looks ugly if the install buttons are too close to the description field. Shrugs.
     if (!allowsAutomaticUpdates) {
-//        if (showReleaseNotes) {
-//            // Fix constraints so that buttons aren't far away from web view when we hide the automatic updates check box
-//            NSLayoutConstraint *skipButtonToReleaseNotesContainerConstraint = [NSLayoutConstraint constraintWithItem:_skipButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_releaseNotesContainerView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:12.0];
-//            
-//            [window.contentView addConstraint:skipButtonToReleaseNotesContainerConstraint];
-//        } else {
-//            NSLayoutConstraint *skipButtonToDescriptionConstraint = [NSLayoutConstraint constraintWithItem:_skipButton attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:_descriptionField attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20.0];
-//
-//            [window.contentView addConstraint:skipButtonToDescriptionConstraint];
-//        }
-//        [_automaticallyInstallUpdatesButton removeFromSuperview];
-        
         _automaticallyInstallUpdatesButton.superview.hidden = YES;
     }
     
