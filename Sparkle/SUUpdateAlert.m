@@ -173,11 +173,20 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
 - (void)displayReleaseNotesSpinner SPU_OBJC_DIRECT
 {
     // Stick a nice big spinner in the middle of the web view until the page is loaded.
-    NSRect frame = _releaseNotesContainerView.frame;
-    _releaseNotesSpinner = [[NSProgressIndicator alloc] initWithFrame:NSMakeRect(NSMidX(frame) - 16, NSMidY(frame) - 16, 32, 32)];
+    _releaseNotesSpinner = [[NSProgressIndicator alloc] init];
+    _releaseNotesSpinner.controlSize = NSControlSizeRegular;
     [_releaseNotesSpinner setStyle:NSProgressIndicatorStyleSpinning];
-    [_releaseNotesSpinner startAnimation:self];
+    
     [_releaseNotesContainerView addSubview:_releaseNotesSpinner];
+    
+    _releaseNotesSpinner.translatesAutoresizingMaskIntoConstraints = NO;
+    [NSLayoutConstraint activateConstraints:@[
+        [_releaseNotesSpinner.centerXAnchor constraintEqualToAnchor:_releaseNotesContainerView.centerXAnchor],
+        [_releaseNotesSpinner.centerYAnchor constraintEqualToAnchor:_releaseNotesContainerView.centerYAnchor]
+    ]];
+    
+    _releaseNotesSpinner.displayedWhenStopped = NO;
+    [_releaseNotesSpinner startAnimation:self];
     
     // If there's no release notes URL, just stick the contents of the description into the web view
     // Otherwise we'll wait until the client wants us to show release notes
@@ -253,7 +262,6 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
 - (void)stopReleaseNotesSpinner SPU_OBJC_DIRECT
 {
     [_releaseNotesSpinner stopAnimation:self];
-    [_releaseNotesSpinner setHidden:YES];
 }
 
 - (BOOL)showsReleaseNotes
