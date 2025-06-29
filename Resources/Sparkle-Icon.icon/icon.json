@@ -1,0 +1,36 @@
+{
+  "fill" : {
+    "solid" : "display-p3:0.89140,0.86611,0.84792,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "hidden" : false,
+          "image-name" : "sparkles.png",
+          "name" : "sparkles"
+        },
+        {
+          "glass" : true,
+          "hidden" : false,
+          "image-name" : "circular_arrow.png",
+          "name" : "circular_arrow"
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
