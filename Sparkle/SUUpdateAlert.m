@@ -65,11 +65,9 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     id<SUVersionDisplay> _versionDisplayer;
     
     IBOutlet NSStackView *_stackView;
-    IBOutlet NSView *_titleView;
     IBOutlet NSButton *_installButton;
     IBOutlet NSButton *_laterButton;
     IBOutlet NSButton *_skipButton;
-    IBOutlet NSTextField *_descriptionField;
     IBOutlet NSView *_releaseNotesContainerView;
     IBOutlet SUBackgroundSeparatorView *_releaseNotesTopDivider;
     IBOutlet SUBackgroundSeparatorView *_releaseNotesBottomDivider;

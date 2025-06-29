@@ -16,7 +16,6 @@
                 <outlet property="_releaseNotesTopDivider" destination="sIa-CV-1JE" id="KlZ-LF-KJS"/>
                 <outlet property="_skipButton" destination="nRH-TL-zdL" id="1wh-qo-iMh"/>
                 <outlet property="_stackView" destination="61v-5k-OXp" id="1rj-X0-yNf"/>
-                <outlet property="_titleView" destination="cGD-9V-Gym" id="Swx-DE-UbH"/>
                 <outlet property="window" destination="5" id="69"/>
             </connections>
         </customObject>
