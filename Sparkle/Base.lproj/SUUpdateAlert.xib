@@ -30,7 +30,7 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1470" height="918"/>
             <value key="minSize" type="size" width="550" height="150"/>
             <view key="contentView" misplaced="YES" id="6">
-                <rect key="frame" x="0.0" y="0.0" width="620" height="550"/>
+                <rect key="frame" x="0.0" y="0.0" width="620" height="370"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 <subviews>
                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="61v-5k-OXp">
@@ -41,11 +41,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <subviews>
                                     <imageView translatesAutoresizingMaskIntoConstraints="NO" id="F1L-zh-U8Z" userLabel="Program icon">
-                                        <rect key="frame" x="20" y="-1" width="64" height="64"/>
+                                        <rect key="frame" x="20" y="15" width="48" height="48"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" priority="800" constant="64" id="66j-dF-FGm"/>
+                                            <constraint firstAttribute="width" priority="800" constant="48" id="66j-dF-FGm"/>
                                             <constraint firstAttribute="width" secondItem="F1L-zh-U8Z" secondAttribute="height" multiplier="1:1" id="OlN-VE-Lim"/>
-                                            <constraint firstAttribute="height" priority="800" constant="64" id="s51-xb-kAG"/>
+                                            <constraint firstAttribute="height" priority="800" constant="48" id="s51-xb-kAG"/>
                                         </constraints>
                                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" image="NSApplicationIcon" id="k4f-D1-7oF"/>
                                         <connections>
@@ -53,7 +53,7 @@
                                         </connections>
                                     </imageView>
                                     <textField focusRingType="none" verticalHuggingPriority="999" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" preferredMaxLayoutWidth="490" translatesAutoresizingMaskIntoConstraints="NO" id="WdU-eY-Ta9" userLabel="Question text field">
-                                        <rect key="frame" x="90" y="12" width="52" height="14"/>
+                                        <rect key="frame" x="74" y="4" width="52" height="14"/>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Question" usesSingleLineMode="YES" id="Jsa-P1-mWz">
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -64,7 +64,7 @@
                                         </connections>
                                     </textField>
                                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Nvn-Dp-hAH" userLabel="Version text field">
-                                        <rect key="frame" x="90" y="34" width="82" height="16"/>
+                                        <rect key="frame" x="74" y="26" width="82" height="33"/>
                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" title="Version title" usesSingleLineMode="YES" id="f6r-wP-EYG">
                                             <font key="font" metaFont="systemBold"/>
                                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -77,12 +77,12 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="F1L-zh-U8Z" firstAttribute="top" secondItem="cGD-9V-Gym" secondAttribute="top" id="29T-yc-60G"/>
-                                    <constraint firstAttribute="bottom" secondItem="WdU-eY-Ta9" secondAttribute="bottom" constant="12" id="7mY-Ta-0dk"/>
+                                    <constraint firstAttribute="bottom" secondItem="WdU-eY-Ta9" secondAttribute="bottom" constant="4" id="7mY-Ta-0dk"/>
                                     <constraint firstItem="Nvn-Dp-hAH" firstAttribute="leading" secondItem="F1L-zh-U8Z" secondAttribute="trailing" constant="8" symbolic="YES" id="8HB-Ur-sq6"/>
                                     <constraint firstItem="WdU-eY-Ta9" firstAttribute="top" secondItem="Nvn-Dp-hAH" secondAttribute="bottom" constant="8" symbolic="YES" id="EJ4-3W-ULx"/>
                                     <constraint firstItem="WdU-eY-Ta9" firstAttribute="leading" secondItem="Nvn-Dp-hAH" secondAttribute="leading" id="MHX-26-xBq"/>
                                     <constraint firstItem="F1L-zh-U8Z" firstAttribute="leading" secondItem="cGD-9V-Gym" secondAttribute="leading" constant="20" symbolic="YES" id="Mg4-Zl-nWT"/>
-                                    <constraint firstItem="Nvn-Dp-hAH" firstAttribute="top" secondItem="cGD-9V-Gym" secondAttribute="top" constant="13" id="UgM-zi-KyS"/>
+                                    <constraint firstItem="Nvn-Dp-hAH" firstAttribute="top" secondItem="cGD-9V-Gym" secondAttribute="top" constant="4" id="UgM-zi-KyS"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Nvn-Dp-hAH" secondAttribute="trailing" constant="20" symbolic="YES" id="kdo-Xj-hbc"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WdU-eY-Ta9" secondAttribute="trailing" constant="20" symbolic="YES" id="pu8-Go-0Eu"/>
                                 </constraints>
