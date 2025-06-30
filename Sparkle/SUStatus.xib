@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24093.8" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24093.8"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,11 +24,11 @@
             <rect key="screenRect" x="0.0" y="0.0" width="1470" height="918"/>
             <value key="minSize" type="size" width="213" height="107"/>
             <view key="contentView" id="6">
-                <rect key="frame" x="0.0" y="0.0" width="400" height="106"/>
+                <rect key="frame" x="0.0" y="0.0" width="400" height="103"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView translatesAutoresizingMaskIntoConstraints="NO" id="7">
-                        <rect key="frame" x="24" y="27" width="64" height="64"/>
+                        <rect key="frame" x="24" y="35" width="64" height="64"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="64" id="BT1-iv-l2H"/>
                             <constraint firstAttribute="width" constant="64" id="eYK-yn-PVe"/>
@@ -39,7 +39,7 @@
                         </connections>
                     </imageView>
                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" setsMaxLayoutWidthAtFirstLayout="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8">
-                        <rect key="frame" x="106" y="75" width="277" height="16"/>
+                        <rect key="frame" x="94" y="75" width="288" height="16"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Status Text (set by loc. string in code)" id="54">
                             <font key="font" metaFont="systemBold"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -50,14 +50,14 @@
                         </connections>
                     </textField>
                     <progressIndicator verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" style="bar" translatesAutoresizingMaskIntoConstraints="NO" id="11">
-                        <rect key="frame" x="107" y="47" width="273" height="20"/>
+                        <rect key="frame" x="96" y="47" width="284" height="20"/>
                         <connections>
                             <binding destination="-2" name="maxValue" keyPath="maxProgressValue" id="13"/>
                             <binding destination="-2" name="value" keyPath="progressValue" previousBinding="13" id="27"/>
                         </connections>
                     </progressIndicator>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="12">
-                        <rect key="frame" x="273" y="12" width="114" height="32"/>
+                        <rect key="frame" x="273" y="13" width="114" height="32"/>
                         <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="55">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -70,7 +70,7 @@
                         </connections>
                     </button>
                     <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="16">
-                        <rect key="frame" x="106" y="22" width="146" height="16"/>
+                        <rect key="frame" x="94" y="23" width="146" height="16"/>
                         <textFieldCell key="cell" sendsActionOnEndEditing="YES" title="Small System Font Text" id="56">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -87,22 +87,21 @@
                     </textField>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="11" secondAttribute="trailing" constant="20" id="1eu-lX-1HN"/>
-                    <constraint firstItem="12" firstAttribute="top" relation="greaterThanOrEqual" secondItem="11" secondAttribute="bottom" constant="9" id="3RZ-xs-4zc"/>
-                    <constraint firstItem="8" firstAttribute="leading" secondItem="7" secondAttribute="trailing" constant="20" id="5bq-w6-BOU"/>
-                    <constraint firstItem="7" firstAttribute="top" secondItem="6" secondAttribute="top" constant="15" id="9Mg-Ac-X6m"/>
+                    <constraint firstAttribute="trailing" secondItem="11" secondAttribute="trailing" constant="20" symbolic="YES" id="1eu-lX-1HN"/>
+                    <constraint firstItem="8" firstAttribute="leading" secondItem="7" secondAttribute="trailing" constant="8" symbolic="YES" id="5bq-w6-BOU"/>
+                    <constraint firstItem="7" firstAttribute="top" secondItem="6" secondAttribute="top" constant="4" id="9Mg-Ac-X6m"/>
                     <constraint firstItem="11" firstAttribute="top" secondItem="8" secondAttribute="bottom" constant="9" id="B9k-9V-CdX"/>
-                    <constraint firstItem="11" firstAttribute="leading" secondItem="7" secondAttribute="trailing" constant="19" id="EQn-l8-5gk"/>
-                    <constraint firstItem="16" firstAttribute="leading" secondItem="7" secondAttribute="trailing" constant="20" id="LTo-e9-myp"/>
+                    <constraint firstItem="11" firstAttribute="leading" secondItem="7" secondAttribute="trailing" constant="8" symbolic="YES" id="EQn-l8-5gk"/>
+                    <constraint firstItem="16" firstAttribute="leading" secondItem="7" secondAttribute="trailing" constant="8" symbolic="YES" id="LTo-e9-myp"/>
                     <constraint firstItem="16" firstAttribute="top" relation="greaterThanOrEqual" secondItem="11" secondAttribute="bottom" constant="9" id="ViF-iJ-I4A"/>
                     <constraint firstItem="7" firstAttribute="leading" secondItem="6" secondAttribute="leading" constant="24" id="ZLG-dr-gmv"/>
                     <constraint firstItem="16" firstAttribute="firstBaseline" secondItem="12" secondAttribute="firstBaseline" id="dHQ-hW-3QN"/>
-                    <constraint firstItem="12" firstAttribute="top" secondItem="11" secondAttribute="bottom" priority="750" constant="9" id="e4R-KE-ofU"/>
-                    <constraint firstAttribute="bottom" secondItem="12" secondAttribute="bottom" constant="19" id="iY3-LJ-ivz"/>
+                    <constraint firstItem="12" firstAttribute="top" secondItem="11" secondAttribute="bottom" constant="8" id="e4R-KE-ofU"/>
+                    <constraint firstAttribute="bottom" secondItem="12" secondAttribute="bottom" constant="20" symbolic="YES" id="iY3-LJ-ivz"/>
                     <constraint firstItem="12" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="16" secondAttribute="trailing" constant="25" id="k07-gJ-v9t"/>
-                    <constraint firstAttribute="trailing" secondItem="12" secondAttribute="trailing" constant="20" id="onJ-J5-mra"/>
-                    <constraint firstAttribute="trailing" secondItem="8" secondAttribute="trailing" constant="19" id="pHi-Hm-GAw"/>
-                    <constraint firstItem="8" firstAttribute="top" secondItem="6" secondAttribute="top" constant="15" id="tAo-wJ-XR0"/>
+                    <constraint firstAttribute="trailing" secondItem="12" secondAttribute="trailing" constant="20" symbolic="YES" id="onJ-J5-mra"/>
+                    <constraint firstAttribute="trailing" secondItem="8" secondAttribute="trailing" constant="20" symbolic="YES" id="pHi-Hm-GAw"/>
+                    <constraint firstItem="8" firstAttribute="top" secondItem="6" secondAttribute="top" constant="12" id="tAo-wJ-XR0"/>
                 </constraints>
             </view>
             <point key="canvasLocation" x="-158" y="132"/>
