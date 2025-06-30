@@ -72,10 +72,6 @@
                 <li>Fixed an issue where notifications could appear twice in some cases.</li>
                 <li>Addressed several minor visual glitches in dark mode.</li>
               </ul>
-<!--              <h3>Version 1.5.1</h3>-->
-<!--              <ul>-->
-<!--                <li>Updated the file export dialog to remember the last-used location.</li>-->
-<!--              </ul>-->
           ]]>
         </description>
         <pubDate>Sat, 26 Jul 2014 15:20:11 +0000</pubDate>
