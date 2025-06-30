@@ -88,7 +88,7 @@ DOWNLOADER_BUNDLE_ID = ${XPC_SERVICE_BUNDLE_ID_PREFIX}.DownloaderService
 // Note this option is only supported for regular application updates and not plug-ins
 SPARKLE_NORMALIZE_INSTALLED_APPLICATION_NAME = 0
 
-SPARKLE_ICON_NAME = AppIcon2
+SPARKLE_ICON_NAME = AppIcon
 
 // If you change any of these version details, you must increase CURRENT_PROJECT_VERSION
 // These variables must have a space after the '=' too
