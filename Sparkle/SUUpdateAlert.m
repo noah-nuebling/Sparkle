@@ -41,7 +41,7 @@
     if (@available(macOS 10.14, *)) {
         [NSColor.separatorColor setFill];
     } else {
-        [NSColor.lightGrayColor setFill];
+        [[NSColor colorWithCalibratedWhite:0.84 alpha:1.0] setFill];
     }
     NSRectFill(self.bounds);
 }
