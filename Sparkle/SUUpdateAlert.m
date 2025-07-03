@@ -303,6 +303,15 @@ static NSString *const SUUpdateAlertTouchBarIndentifier = @"" SPARKLE_BUNDLE_IDE
         
         self.webView.view.frame = boxContentView.bounds;
         self.webView.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+        
+        /// Prevent webview from spilling out of the box
+        ///     Note: [Jul 2025] ]The box around the webview is of type `NSBoxPrimary` (defined in IB). We're using it just for its border. Its fill is never visible, since the box's background is covered by the `webView`s background (in lightmode) or the `darkBackgroundView` (in darkmode)
+        ({
+            const double boxCornerRadius = 5.0, boxBorderWidth = 1.0; /// [Jul 2025] Hardcoded values. Matches `NSBoxPrimary` on macOS 26.0 Beta 2 || Tip: If you ever need to change these hardcoded values for new macOS versions, you might have to turn on "Increase Contrast" in System Settings.
+            boxContentView.wantsLayer = YES;
+            boxContentView.layer.masksToBounds = YES;
+            boxContentView.layer.cornerRadius = boxCornerRadius - boxBorderWidth;
+        });
     }
 
     [self.window setFrameAutosaveName: showReleaseNotes ? @"SUUpdateAlert" : @"SUUpdateAlertSmall" ];
