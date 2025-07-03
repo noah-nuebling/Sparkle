@@ -31,23 +31,6 @@
 #import "SPUXPCServiceInfo.h"
 #import "SPUUserUpdateState.h"
 
-@interface SUBackgroundSeparatorView : NSView
-@end
-
-@implementation SUBackgroundSeparatorView
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-    if (@available(macOS 10.14, *)) {
-        [NSColor.separatorColor setFill];
-    } else {
-        [[NSColor colorWithCalibratedWhite:0.84 alpha:1.0] setFill];
-    }
-    NSRectFill(self.bounds);
-}
-
-@end
-
 static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDENTIFIER ".SUUpdateAlert";
 
 @interface SUUpdateAlert () <NSTouchBarDelegate>
@@ -60,7 +43,6 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     SUHost *_host;
     SPUUserUpdateState *_state;
     NSProgressIndicator *_releaseNotesSpinner;
-    NSBox *_backgroundView;
     id<SUReleaseNotesView> _releaseNotesView;
     id<SUVersionDisplay> _versionDisplayer;
     
@@ -69,8 +51,7 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     IBOutlet NSButton *_laterButton;
     IBOutlet NSButton *_skipButton;
     IBOutlet NSView *_releaseNotesContainerView;
-    IBOutlet SUBackgroundSeparatorView *_releaseNotesTopDivider;
-    IBOutlet SUBackgroundSeparatorView *_releaseNotesBottomDivider;
+    IBOutlet NSBox *_releaseNotesContainerBoxView;
     IBOutlet NSButton *_automaticallyInstallUpdatesButton;
     
     void (^_didBecomeKeyBlock)(void);
@@ -351,22 +332,22 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
         // This avoids a "white flash" that may be present when the webview initially loads in dark mode
         // This also is necessary for macOS 10.14, otherwise the background may stay white on 10.14 (but not in later OS's)
         [_releaseNotesView setDrawsBackground:NO];
-        
-        // Use NSBox to get the proper dynamically colored background behind the release notes view when
-        // the release notes view background is transparent
-        _backgroundView = [[NSBox alloc] initWithFrame:_releaseNotesView.view.frame];
-        _backgroundView.boxType = NSBoxCustom;
-        _backgroundView.fillColor = [NSColor textBackgroundColor];
-        _backgroundView.borderColor = [NSColor clearColor];
-        // Using auto-resizing mask instead of constraints works well enough
-        _backgroundView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [_releaseNotesView.view.superview addSubview:_backgroundView positioned:NSWindowBelow relativeTo:_releaseNotesView.view];
     }
 }
 
 - (void)windowDidLoad
 {
     NSWindow *window = self.window;
+    
+    _releaseNotesContainerBoxView.boxType = NSBoxCustom;
+    _releaseNotesContainerBoxView.cornerRadius = 6.0;
+    if (@available(macOS 10.14, *)) {
+        _releaseNotesContainerBoxView.borderColor = NSColor.separatorColor;
+    } else {
+        _releaseNotesContainerBoxView.borderColor = [NSColor colorWithCalibratedWhite:0.84 alpha:1.0];
+    }
+    _releaseNotesContainerBoxView.borderWidth = 1.0;
+    _releaseNotesContainerBoxView.fillColor = NSColor.windowBackgroundColor;
     
     BOOL showReleaseNotes = [self showsReleaseNotes];
     if (showReleaseNotes) {
@@ -385,15 +366,9 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     BOOL allowsAutomaticUpdates = _allowsAutomaticUpdates;
     
     if (showReleaseNotes) {
-        // Adjust spacing for release notes dividers
-        [_stackView setCustomSpacing:0.0 afterView:_releaseNotesTopDivider];
-        [_stackView setCustomSpacing:0.0 afterView:_releaseNotesContainerView];
-        
         [self displayReleaseNotesSpinner];
     } else {
-        _releaseNotesContainerView.hidden = YES;
-        _releaseNotesTopDivider.hidden = YES;
-        _releaseNotesBottomDivider.hidden = YES;
+        _releaseNotesContainerBoxView.hidden = YES;
     }
     
     // NOTE: The code below for deciding what buttons to hide is complex! Due to array of feature configurations :)
