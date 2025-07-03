@@ -347,7 +347,7 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
         _releaseNotesContainerBoxView.borderColor = [NSColor colorWithCalibratedWhite:0.84 alpha:1.0];
     }
     _releaseNotesContainerBoxView.borderWidth = 1.0;
-    _releaseNotesContainerBoxView.fillColor = NSColor.windowBackgroundColor;
+    _releaseNotesContainerBoxView.fillColor = NSColor.controlBackgroundColor;
     
     BOOL showReleaseNotes = [self showsReleaseNotes];
     if (showReleaseNotes) {
