@@ -75,7 +75,7 @@
                     <customView translatesAutoresizingMaskIntoConstraints="NO" id="fKC-QA-GZa" userLabel="Container to hide release notes">
                         <rect key="frame" x="108" y="73" width="492" height="235"/>
                         <subviews>
-                            <box borderType="line" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="89">
+                            <box boxType="custom" borderType="line" cornerRadius="5" titlePosition="noTitle" translatesAutoresizingMaskIntoConstraints="NO" id="89">
                                 <rect key="frame" x="0.0" y="0.0" width="492" height="215"/>
                                 <view key="contentView" id="hbB-V1-Bf6">
                                     <rect key="frame" x="1" y="1" width="490" height="213"/>
@@ -84,6 +84,8 @@
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="pvn-8k-9Ev"/>
                                 </constraints>
+                                <color key="borderColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
+                                <color key="fillColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <font key="titleFont" size="11" name="LucidaGrande"/>
                                 <connections>
                                     <binding destination="-2" name="hidden" keyPath="showsReleaseNotes" id="164">
