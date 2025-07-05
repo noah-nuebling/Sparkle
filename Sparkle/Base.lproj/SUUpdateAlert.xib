@@ -205,7 +205,7 @@ DQ
                     <constraint firstItem="fKC-QA-GZa" firstAttribute="leading" secondItem="10" secondAttribute="leading" id="qQ9-OJ-06z"/>
                     <constraint firstItem="101" firstAttribute="top" secondItem="10" secondAttribute="bottom" constant="8" id="r7Q-z5-jkx"/>
                     <constraint firstItem="10" firstAttribute="top" secondItem="6" secondAttribute="top" constant="15" id="rXd-o0-WQQ"/>
-                    <constraint firstAttribute="trailing" secondItem="117" secondAttribute="trailing" constant="21" id="sHI-Hm-eSA"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="117" secondAttribute="trailing" constant="21" id="sHI-Hm-eSA"/>
                     <constraint firstItem="7" firstAttribute="leading" secondItem="6" secondAttribute="leading" constant="22" id="zSE-lw-Ggj"/>
                 </constraints>
             </view>
