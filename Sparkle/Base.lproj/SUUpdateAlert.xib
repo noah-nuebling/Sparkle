@@ -189,7 +189,7 @@ DQ
                     <constraint firstAttribute="trailing" secondItem="76" secondAttribute="trailing" constant="20" id="GdV-QF-Cdi"/>
                     <constraint firstItem="76" firstAttribute="width" secondItem="22" secondAttribute="width" multiplier="0.8" priority="110" id="I8t-73-gX0"/>
                     <constraint firstItem="117" firstAttribute="top" secondItem="fKC-QA-GZa" secondAttribute="bottom" priority="900" constant="8" id="M7E-UY-nWx"/>
-                    <constraint firstItem="fKC-QA-GZa" firstAttribute="top" secondItem="101" secondAttribute="bottom" constant="8" id="Mbz-C0-6Cx"/>
+                    <constraint firstItem="fKC-QA-GZa" firstAttribute="top" secondItem="101" secondAttribute="bottom" constant="20" id="Mbz-C0-6Cx"/>
                     <constraint firstItem="117" firstAttribute="leading" secondItem="23" secondAttribute="leading" id="Nm4-V1-7X0"/>
                     <constraint firstItem="23" firstAttribute="leading" secondItem="117" secondAttribute="leading" id="OXY-8u-ljs"/>
                     <constraint firstItem="23" firstAttribute="leading" secondItem="10" secondAttribute="leading" constant="1" id="RRB-n5-xid"/>
@@ -197,7 +197,7 @@ DQ
                     <constraint firstItem="7" firstAttribute="top" secondItem="6" secondAttribute="top" constant="20" id="alH-AL-5RD"/>
                     <constraint firstItem="22" firstAttribute="baseline" secondItem="23" secondAttribute="baseline" id="ayY-6b-JGg"/>
                     <constraint firstItem="76" firstAttribute="baseline" secondItem="22" secondAttribute="baseline" id="dIR-3Q-wQx"/>
-                    <constraint firstAttribute="bottom" secondItem="76" secondAttribute="bottom" constant="19" id="gcR-Kl-Wlq"/>
+                    <constraint firstAttribute="bottom" secondItem="76" secondAttribute="bottom" constant="20" id="gcR-Kl-Wlq"/>
                     <constraint firstAttribute="trailing" secondItem="101" secondAttribute="trailing" constant="22" id="k7p-HC-x7i"/>
                     <constraint firstItem="fKC-QA-GZa" firstAttribute="leading" secondItem="23" secondAttribute="leading" constant="-1" id="nVW-Qt-8JE"/>
                     <constraint firstAttribute="trailing" secondItem="10" secondAttribute="trailing" constant="22" id="oQx-Oc-awc"/>
