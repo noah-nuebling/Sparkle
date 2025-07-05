@@ -192,14 +192,14 @@ DQ
                     <constraint firstItem="fKC-QA-GZa" firstAttribute="top" secondItem="101" secondAttribute="bottom" constant="20" id="Mbz-C0-6Cx"/>
                     <constraint firstItem="117" firstAttribute="leading" secondItem="23" secondAttribute="leading" id="Nm4-V1-7X0"/>
                     <constraint firstItem="23" firstAttribute="leading" secondItem="117" secondAttribute="leading" id="OXY-8u-ljs"/>
-                    <constraint firstItem="23" firstAttribute="leading" secondItem="10" secondAttribute="leading" constant="1" id="RRB-n5-xid"/>
+                    <constraint firstItem="23" firstAttribute="leading" secondItem="10" secondAttribute="leading" id="RRB-n5-xid"/>
                     <constraint firstItem="76" firstAttribute="leading" secondItem="22" secondAttribute="trailing" constant="12" id="VQk-Ut-ggj"/>
                     <constraint firstItem="7" firstAttribute="top" secondItem="6" secondAttribute="top" constant="20" id="alH-AL-5RD"/>
                     <constraint firstItem="22" firstAttribute="baseline" secondItem="23" secondAttribute="baseline" id="ayY-6b-JGg"/>
                     <constraint firstItem="76" firstAttribute="baseline" secondItem="22" secondAttribute="baseline" id="dIR-3Q-wQx"/>
                     <constraint firstAttribute="bottom" secondItem="76" secondAttribute="bottom" constant="20" id="gcR-Kl-Wlq"/>
                     <constraint firstAttribute="trailing" secondItem="101" secondAttribute="trailing" constant="22" id="k7p-HC-x7i"/>
-                    <constraint firstItem="fKC-QA-GZa" firstAttribute="leading" secondItem="23" secondAttribute="leading" constant="-1" id="nVW-Qt-8JE"/>
+                    <constraint firstItem="fKC-QA-GZa" firstAttribute="leading" secondItem="23" secondAttribute="leading" id="nVW-Qt-8JE"/>
                     <constraint firstAttribute="trailing" secondItem="10" secondAttribute="trailing" constant="22" id="oQx-Oc-awc"/>
                     <constraint firstItem="76" firstAttribute="width" secondItem="23" secondAttribute="width" priority="109" id="pLI-z3-P0b"/>
                     <constraint firstItem="fKC-QA-GZa" firstAttribute="leading" secondItem="10" secondAttribute="leading" id="qQ9-OJ-06z"/>
