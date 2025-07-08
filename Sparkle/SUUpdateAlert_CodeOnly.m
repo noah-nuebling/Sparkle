@@ -243,7 +243,7 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
     
     /// MARK: Create window and view hierarchy
 
-    const int layout = 2; /// Set this to 0, 1, 2 to switch between the different layouts.
+    const int layout = 1; /// Set this to 0, 1, 2 to switch between the different layouts.
 
     NSView *postHeader = sui_vstack(0, /// These views don't change regardless of the header layout.
         sui_outlet_kvc(@"_releaseNotesContainerView", sui_vstack(0,
@@ -280,8 +280,8 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
     
     NSWindow *win = sui_outlet_kvc(@"window", sui_window(sui_padder((20, 20, 20, 20), ({
         NSView *v;
-        if (layout == 0) /// pre-Big Sur NSAlert layout
-        v = sui_outlet_kvc(@"_stackView", sui_hstack(0,
+        if (layout == 0) v = /// pre-Big Sur NSAlert layout
+        sui_outlet_kvc(@"_stackView", sui_hstack(0,
             sui_vstack(0,
                 sui_padder((0, 20, 0, 0), sui_outlet(out_applicationIcon, sui_image(@"NSApplicationIcon", 64))),
                 sui_spacer(),
@@ -298,13 +298,15 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
                 postHeader
             )
         ));
-        if (layout == 1) /// Kaleidoscope-style layout
-        v = sui_outlet_kvc(@"_stackView", sui_vstack(0,
+        if (layout == 1) v = /// Kaleidoscope-style layout
+        sui_outlet_kvc(@"_stackView", sui_vstack(0,
             sui_padder((-10, 0, 10, 0), sui_hstack(0,
                 sui_padder((0, 10, 0, 0), sui_outlet(out_applicationIcon, sui_image(@"NSApplicationIcon", 64))),
                 sui_vstack(5,
                     sui_hstack(0,
-                        sui_outlet(out_title, sui_title(@"Version Title")),
+                        ({ auto v = sui_outlet(out_title, sui_title(@"Version Title"));
+                            v.font = [NSFont systemFontOfSize: 16.0 weight: NSFontWeightBold]; /// This demonstates how to do a one-off adjustment to a view without creating a new `sui_` component.
+                        v; }),
                         sui_spacer()
                     ),
                     sui_hstack(0,
@@ -316,8 +318,8 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
             )),
             postHeader
         ));
-        if (layout == 2) /// Tahoe NSAlert layout
-        v = sui_outlet_kvc(@"_stackView", sui_vstack(8,
+        if (layout == 2) v = /// Tahoe NSAlert layout
+        sui_outlet_kvc(@"_stackView", sui_vstack(8,
             sui_padder((0, 0, 0, 0), sui_hstack(0,
                 sui_outlet(out_applicationIcon, sui_image(@"NSApplicationIcon", 64)),
                 sui_spacer()
