@@ -31,6 +31,8 @@
 #import "SPUXPCServiceInfo.h"
 #import "SPUUserUpdateState.h"
 
+#import "SUUpdateAlert_CodeOnly.h"
+
 static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDENTIFIER ".SUUpdateAlert";
 
 @interface SUUpdateAlert () <NSTouchBarDelegate>
@@ -63,9 +65,18 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
     BOOL _windowLoadedAndShowsReleaseNotes;
 }
 
+- (void)loadWindow {
+    if ([self.windowNibName isEqual: @"__purecode__"])
+        self.window = SUUpdateAlert_makeWindow(self); /// Do we need to do anything else here?
+    else
+        [super loadWindow];
+}
+
 - (instancetype)initWithAppcastItem:(SUAppcastItem *)item state:(SPUUserUpdateState *)state host:(SUHost *)aHost versionDisplayer:(id<SUVersionDisplay>)versionDisplayer completionBlock:(void (^)(SPUUserUpdateChoice, NSRect, BOOL))completionBlock didBecomeKeyBlock:(void (^)(void))didBecomeKeyBlock
 {
-    self = [super initWithWindowNibName:@"SUUpdateAlert"];
+    if ((0)) self = [super initWithWindowNibName:@"SUUpdateAlert"];
+    if ((1)) self = [super initWithWindowNibName: @"__purecode__"];
+    
     if (self != nil) {
         _host = aHost;
         _updateItem = item;
