@@ -94,10 +94,7 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
         double top, trailing, bottom, leading; /// Arranged like a clock. Common in webdev.
     } sui_padding;
     
-    auto sui_addsubview_withpadding = ^void (NSView *v, sui_padding padding, NSView *subview) {
-        
-        [v addSubview: subview];
-        
+    auto sui_setpadding = ^void (NSView *v, sui_padding padding, NSView *subview) {
         [v.topAnchor       constraintEqualToAnchor: subview.topAnchor      constant: -padding.top].active = YES;
         [v.trailingAnchor  constraintEqualToAnchor: subview.trailingAnchor constant:  padding.trailing].active = YES;
         [v.bottomAnchor    constraintEqualToAnchor: subview.bottomAnchor   constant:  padding.bottom].active = YES;
@@ -106,7 +103,8 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
     
     auto _sui_padder = ^NSView * (sui_padding padding, NSView *subview) {
         auto v = sui_view(NSView);
-        sui_addsubview_withpadding(v, padding, subview);
+        [v addSubview: subview];
+        sui_setpadding(v, padding, subview);
         return v;
     };
     #define sui_padder(padding, subview) _sui_padder((sui_padding){ UNPACK padding }, subview)
@@ -185,26 +183,31 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
     };
     
     auto sui_box = ^ NSBox * (NSView *contentView) {
+    
         auto v = sui_view(NSBox);
-        sui_addsubview_withpadding(v.contentView, (sui_padding){0,0,0,0}, contentView);
+        [v.contentView addSubview: contentView];
+        sui_setpadding(v.contentView, (sui_padding){0,0,0,0}, contentView);
         
-        const double boxCornerRadius = 5.0;
-        const double boxBorderWidth = 1.0;
         const double boxMinHeight = 200;
-        
-        v.titlePosition = NSNoTitle;
-        v.boxType = NSBoxCustom;
-        v.cornerRadius = boxCornerRadius;
-        v.borderWidth = boxBorderWidth;
-        v.borderColor = NSColor.separatorColor;
-        v.fillColor = NSColor.textBackgroundColor;
+        v.contentViewMargins = NSMakeSize(0, 0);
         [v.heightAnchor constraintGreaterThanOrEqualToConstant: boxMinHeight].active = YES;
         
-        contentView.wantsLayer = YES;
-        contentView.layer.masksToBounds = YES;
-        contentView.layer.cornerRadius = boxCornerRadius - boxBorderWidth;
-        
-        /// Some of this styling is overridden in SUUpdateAlert.m. Should probably consolidate [Jul 2025]
+        if ((0)) { /// All this styling is overridden in SUUpdateAlert.m. Should probably consolidate [Jul 2025]
+            
+            const double boxCornerRadius = 5.0;
+            const double boxBorderWidth = 1.0;
+            
+            v.titlePosition = NSNoTitle;
+            v.boxType = NSBoxCustom;
+            v.cornerRadius = boxCornerRadius;
+            v.borderWidth = boxBorderWidth;
+            v.borderColor = NSColor.separatorColor;
+            v.fillColor = NSColor.textBackgroundColor;
+            
+            contentView.wantsLayer = YES;
+            contentView.layer.masksToBounds = YES;
+            contentView.layer.cornerRadius = boxCornerRadius - boxBorderWidth;
+        }
     
         return v;
     };
