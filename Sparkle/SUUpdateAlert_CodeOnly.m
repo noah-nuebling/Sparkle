@@ -23,6 +23,7 @@
 /// v These macros should be documented or cleaned up
 
 #define TOSTR(str) #str
+#define UNPACK(x...) x
 
 #define nowarn_begin(warning)                           \
     _Pragma("clang diagnostic push")                    \
@@ -103,12 +104,12 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
         [v.leadingAnchor   constraintEqualToAnchor: subview.leadingAnchor  constant: -padding.leading].active = YES;
     };
     
-    auto sui_padder = ^NSView * (sui_padding padding, NSView *subview) {
-        
+    auto _sui_padder = ^NSView * (sui_padding padding, NSView *subview) {
         auto v = sui_view(NSView);
         sui_addsubview_withpadding(v, padding, subview);
         return v;
     };
+    #define sui_padder(padding, subview) _sui_padder((sui_padding){ UNPACK padding }, subview)
     
     /// MARK: SUI Componenents
     
@@ -121,6 +122,7 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
             | NSWindowStyleMaskTitled
         ;
         v.contentView = contentView;
+        v.identifier = @"SUUpdateAlert";
         return v;
     };
     
@@ -242,7 +244,7 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
 
     NSView *postHeader = sui_vstack(0, /// These views don't change regardless of the header layout.
         sui_outlet_kvc(@"_releaseNotesContainerView", sui_vstack(0,
-            sui_padder((sui_padding) { 0, 0, 8, 0 }, sui_hstack(0,
+            sui_padder((0, 0, 8, 0), sui_hstack(0,
                 sui_outlet_kvc(@"_releaseNotesLabel", sui_label_releasenotes(@"Release Notes:")),
                 sui_spacer(),
             )),
@@ -251,11 +253,11 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
             )),
         )),
         
-        sui_padder((sui_padding){ 10, 0, 10, 0 }, sui_hstack(0,
+        sui_padder((10, 0, 10, 0), sui_hstack(0,
             sui_outlet_kvc(@"_automaticallyInstallUpdatesButton", sui_outlet(out_checkbox, sui_checkbox(SULocalizedStringFromTableInBundle(@"fPh-Q9-vLr.title", @"SUUpdateAlert", SUSparkleBundle(), @"English: Automatically download and install updates in the future")))),
             sui_spacer(),
         )),
-        sui_padder(layout==0 ? (sui_padding){ 0, 0, 0, 0 } : (sui_padding){ 0, -5, -5, -5 }, /// Bring the big rounded buttons a bit closer to the window edge. NSAlerts under Tahoe seem to do the same.
+        _sui_padder(layout==0 ? (sui_padding){ 0, 0, 0, 0 } : (sui_padding){ 0, -5, -5, -5 }, /// Bring the big rounded buttons a bit closer to the window edge. NSAlerts under Tahoe seem to do the same.
             sui_hstack(12,
                 sui_outlet(out_skipButton, sui_outlet_kvc(@"_skipButton",       sui_button(SULocalizedStringFromTableInBundle(@"kVE-pO-gl0.title", @"SUUpdateAlert", SUSparkleBundle(), @"English: Skip This Version")))),
                 sui_spacer(),
@@ -273,20 +275,20 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
         /// Note: It has been discussed that all buttons should be the same width, but this looks terrible in German because the skipButton is much wider than the others. I think laterButton and installButton could be made equal-width.
     }
     
-    NSWindow *win = sui_outlet_kvc(@"window", sui_window(sui_padder((sui_padding) { 20, 20, 20, 20 }, ({
+    NSWindow *win = sui_outlet_kvc(@"window", sui_window(sui_padder((20, 20, 20, 20), ({
         NSView *v;
         if (layout == 0) /// pre-Big Sur NSAlert layout
         v = sui_outlet_kvc(@"_stackView", sui_hstack(0,
             sui_vstack(0,
-                sui_padder((sui_padding){ 0, 20, 0, 0 }, sui_outlet(out_applicationIcon, sui_image(@"NSApplicationIcon", 64))),
+                sui_padder((0, 20, 0, 0), sui_outlet(out_applicationIcon, sui_image(@"NSApplicationIcon", 64))),
                 sui_spacer(),
             ),
             sui_vstack(8,
-                sui_padder((sui_padding){0, 0, 0, 0}, sui_hstack(0,
+                sui_padder((0, 0, 0, 0), sui_hstack(0,
                     sui_outlet(out_title, sui_title(@"Version Title")),
                     sui_spacer()
                 )),
-                sui_padder((sui_padding){0, 0, 10, 0}, sui_hstack(0,
+                sui_padder((0, 0, 10, 0), sui_hstack(0,
                     sui_outlet(out_subtitle, sui_subtitle(@"Question")),
                     sui_spacer()
                 )),
@@ -295,8 +297,8 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
         ));
         if (layout == 1) /// Kaleidoscope-style layout
         v = sui_outlet_kvc(@"_stackView", sui_vstack(0,
-            sui_padder((sui_padding){ -10, 0, 10, 0 }, sui_hstack(0,
-                sui_padder((sui_padding){ 0, 10, 0, 0 }, sui_outlet(out_applicationIcon, sui_image(@"NSApplicationIcon", 64))),
+            sui_padder((-10, 0, 10, 0), sui_hstack(0,
+                sui_padder((0, 10, 0, 0), sui_outlet(out_applicationIcon, sui_image(@"NSApplicationIcon", 64))),
                 sui_vstack(5,
                     sui_hstack(0,
                         sui_outlet(out_title, sui_title(@"Version Title")),
@@ -313,15 +315,15 @@ NSWindow *SUUpdateAlert_makeWindow(SUUpdateAlert *owner) {
         ));
         if (layout == 2) /// Tahoe NSAlert layout
         v = sui_outlet_kvc(@"_stackView", sui_vstack(8,
-            sui_padder((sui_padding){ 0, 0, 0, 0 }, sui_hstack(0,
+            sui_padder((0, 0, 0, 0), sui_hstack(0,
                 sui_outlet(out_applicationIcon, sui_image(@"NSApplicationIcon", 64)),
                 sui_spacer()
             )),
-            sui_padder((sui_padding){ 0, 0, 0, 0 }, sui_hstack(0,
+            sui_padder((0, 0, 0, 0), sui_hstack(0,
                 sui_outlet(out_title, sui_title(@"Version Title")),
                 sui_spacer()
             )),
-            sui_padder((sui_padding){ 0, 0, 10, 0 }, sui_hstack(0,
+            sui_padder((0, 0, 10, 0), sui_hstack(0,
                 sui_outlet(out_subtitle, sui_subtitle(@"Question")),
                 sui_spacer()
             )),
