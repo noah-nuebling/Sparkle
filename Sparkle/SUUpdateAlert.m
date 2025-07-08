@@ -31,8 +31,6 @@
 #import "SPUXPCServiceInfo.h"
 #import "SPUUserUpdateState.h"
 
-#import "SUUpdateAlert_CodeOnly.h"
-
 static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDENTIFIER ".SUUpdateAlert";
 
 @interface SUUpdateAlert () <NSTouchBarDelegate>
@@ -67,13 +65,7 @@ static NSString *const SUUpdateAlertTouchBarIdentifier = @"" SPARKLE_BUNDLE_IDEN
 
 - (instancetype)initWithAppcastItem:(SUAppcastItem *)item state:(SPUUserUpdateState *)state host:(SUHost *)aHost versionDisplayer:(id<SUVersionDisplay>)versionDisplayer completionBlock:(void (^)(SPUUserUpdateChoice, NSRect, BOOL))completionBlock didBecomeKeyBlock:(void (^)(void))didBecomeKeyBlock
 {
-    
-    if ((0)) self = [super initWithWindowNibName:@"SUUpdateAlert"];
-    if ((1)) {
-        self = [super initWithWindow: nil];
-        NSWindow *win = SUUpdateAlert_makeWindow(self);
-    }
-    
+    self = [super initWithWindowNibName:@"SUUpdateAlert"];
     if (self != nil) {
         _host = aHost;
         _updateItem = item;

@@ -53,8 +53,6 @@
 		14958C6F19AEBC980061B14F /* test-pubkey.pem in Resources */ = {isa = PBXBuildFile; fileRef = 14958C6C19AEBC610061B14F /* test-pubkey.pem */; };
 		1EAA4C8B2132C7BF00604473 /* ReleaseNotesColorStyle.css in Resources */ = {isa = PBXBuildFile; fileRef = 1EAA4C8A2132C7BF00604473 /* ReleaseNotesColorStyle.css */; };
 		3772FEA913DE0B6B00F79537 /* SUVersionDisplayProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 3772FEA813DE0B6B00F79537 /* SUVersionDisplayProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4F5F77AE2E1C278B0042063C /* SUUpdateAlert_CodeOnly.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5F77AC2E1C278B0042063C /* SUUpdateAlert_CodeOnly.m */; };
-		4F5F77AF2E1C278B0042063C /* SUUpdateAlert_CodeOnly.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F5F77AB2E1C278B0042063C /* SUUpdateAlert_CodeOnly.h */; };
 		55C14BEF136EF21700649790 /* SUStatus.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55C14BD8136EF00C00649790 /* SUStatus.xib */; };
 		55C14F06136EF6DB00649790 /* SULog.h in Headers */ = {isa = PBXBuildFile; fileRef = 55C14F04136EF6DB00649790 /* SULog.h */; };
 		55C14F07136EF6DB00649790 /* SULog.m in Sources */ = {isa = PBXBuildFile; fileRef = 55C14F05136EF6DB00649790 /* SULog.m */; };
@@ -953,8 +951,6 @@
 		37A5F28728E9219000891504 /* zh_HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_HK; path = zh_HK.lproj/SUUpdateAlert.strings; sourceTree = "<group>"; };
 		37A5F28828E9219000891504 /* zh_HK */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_HK; path = zh_HK.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		4607BEA21948443800EF8DA4 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Sparkle.strings; sourceTree = "<group>"; };
-		4F5F77AB2E1C278B0042063C /* SUUpdateAlert_CodeOnly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SUUpdateAlert_CodeOnly.h; sourceTree = "<group>"; };
-		4F5F77AC2E1C278B0042063C /* SUUpdateAlert_CodeOnly.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SUUpdateAlert_CodeOnly.m; sourceTree = "<group>"; };
 		525A278F133D6AE900FD8D70 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		555CF29A196C52330000B31E /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/Sparkle.strings; sourceTree = "<group>"; };
 		55C14BD8136EF00C00649790 /* SUStatus.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SUStatus.xib; sourceTree = "<group>"; };
@@ -2030,8 +2026,6 @@
 				6196CFE409C71ADE000DC222 /* SUStatusController.m */,
 				61B5FCA009C5228F00B25A18 /* SUUpdateAlert.h */,
 				61B5FCA109C5228F00B25A18 /* SUUpdateAlert.m */,
-				4F5F77AB2E1C278B0042063C /* SUUpdateAlert_CodeOnly.h */,
-				4F5F77AC2E1C278B0042063C /* SUUpdateAlert_CodeOnly.m */,
 				723AC036259DBF1B00BDB4FA /* Release Notes Views */,
 				612DCBAD0D488BC60015DBEA /* SUUpdatePermissionPrompt.h */,
 				612DCBAE0D488BC60015DBEA /* SUUpdatePermissionPrompt.m */,
@@ -2577,7 +2571,6 @@
 				72B767D21C9C7B9300A07552 /* SPUProbingUpdateDriver.h in Headers */,
 				7229E1B91C97CC4D00CB50D0 /* SPUScheduledUpdateDriver.h in Headers */,
 				726E075C1CA3A6D6001A286B /* SPUSecureCoding.h in Headers */,
-				4F5F77AF2E1C278B0042063C /* SUUpdateAlert_CodeOnly.h in Headers */,
 				7246E0A31C83B685003B4E75 /* SPUStandardUpdaterController.h in Headers */,
 				725CB95A1C7121830064365A /* SPUStandardUserDriver.h in Headers */,
 				726E4A371C89116000C57C6A /* SPUStandardUserDriverDelegate.h in Headers */,
@@ -3693,7 +3686,6 @@
 				61EF67560E25B58D00F754E0 /* SUHost.m in Sources */,
 				724BB3891D32B915005D534A /* SUInstallerConnection.m in Sources */,
 				72F94F5A1CC450DE002DEE68 /* SUInstallerLauncher.m in Sources */,
-				4F5F77AE2E1C278B0042063C /* SUUpdateAlert_CodeOnly.m in Sources */,
 				724BB3AA1D3347C2005D534A /* SUInstallerStatus.m in Sources */,
 				55C14F07136EF6DB00649790 /* SULog.m in Sources */,
 				726F2CE61BC9C33D001971A4 /* SUOperatingSystem.m in Sources */,

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="24093.8" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="24093.8"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,7 +29,7 @@
             <windowCollectionBehavior key="collectionBehavior" fullScreenAuxiliary="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="83" y="492" width="488" height="379"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1409"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2304" height="1271"/>
             <view key="contentView" id="6">
                 <rect key="frame" x="0.0" y="0.0" width="437" height="379"/>
                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -145,7 +145,7 @@ This is the information that would be sent:</string>
                     <rect key="frame" x="103" y="0.0" width="314" height="115"/>
                     <clipView key="contentView" id="sbp-rk-wxX">
                         <rect key="frame" x="1" y="1" width="312" height="113"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView focusRingType="none" verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="14" id="41">
                                 <rect key="frame" x="0.0" y="0.0" width="312" height="113"/>
@@ -216,14 +216,14 @@ This is the information that would be sent:</string>
             <point key="canvasLocation" x="-621" y="194"/>
         </customView>
         <customView id="0CP-x7-YFK" userLabel="Response View">
-            <rect key="frame" x="0.0" y="-4" width="437" height="59"/>
+            <rect key="frame" x="0.0" y="0.0" width="437" height="55"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="ilj-QP-33p" userLabel="View">
-                    <rect key="frame" x="0.0" y="0.0" width="437" height="59"/>
+                    <rect key="frame" x="0.0" y="0.0" width="437" height="55"/>
                     <subviews>
                         <button tag="1" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="sMh-ha-r7R">
-                            <rect key="frame" x="267" y="20" width="150" height="24"/>
+                            <rect key="frame" x="260" y="13" width="164" height="32"/>
                             <buttonCell key="cell" type="push" title="Check Automatically" bezelStyle="rounded" alignment="center" state="on" borderStyle="border" tag="1" inset="2" id="OhZ-1K-DmA">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
@@ -239,7 +239,7 @@ DQ
                             </connections>
                         </button>
                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cFC-wV-H3j">
-                            <rect key="frame" x="152" y="20" width="101" height="24"/>
+                            <rect key="frame" x="145" y="13" width="115" height="32"/>
                             <buttonCell key="cell" type="push" title="Don’t Check" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="cCJ-V0-aTi">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
@@ -282,7 +282,7 @@ Gw
                     <rect key="frame" x="0.0" y="0.0" width="437" height="20"/>
                     <subviews>
                         <button focusRingType="none" translatesAutoresizingMaskIntoConstraints="NO" id="a90-Iq-FgS" userLabel="IncludeInfoButton">
-                            <rect key="frame" x="105" y="0.0" width="197" height="14"/>
+                            <rect key="frame" x="104" y="-1" width="200" height="16"/>
                             <buttonCell key="cell" type="check" title="Include anonymous system profile" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" focusRingType="none" inset="2" id="gz7-LM-gNf">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
@@ -347,7 +347,7 @@ Gw
                     <rect key="frame" x="0.0" y="0.0" width="437" height="20"/>
                     <subviews>
                         <button focusRingType="none" translatesAutoresizingMaskIntoConstraints="NO" id="BId-kb-eYW" userLabel="automaticallyDownloadUpdatesButton">
-                            <rect key="frame" x="105" y="0.0" width="245" height="14"/>
+                            <rect key="frame" x="104" y="-1" width="248" height="16"/>
                             <buttonCell key="cell" type="check" title="Automatically download and install updates" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" focusRingType="none" inset="2" id="AUc-33-qGN">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="smallSystem"/>
